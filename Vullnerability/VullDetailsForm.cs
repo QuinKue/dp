@@ -42,22 +42,24 @@ namespace Vullnerability
 
         private void BuildTable()
         {
-            table.BackColor = Color.FromArgb(30, 30, 30);
+            // Светлая тема. Границы ячеек оставляем — они делят блоки в карточке.
+            table.BackColor = UiTheme.Surface;
             table.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             table.RowCount = 0;
             table.RowStyles.Clear();
 
-            lblTitle.ForeColor = Color.White;
+            lblTitle.ForeColor = UiTheme.TextPrimary;
             lblTitle.Font = new Font(lblTitle.Font.FontFamily, 12, FontStyle.Bold);
 
-            btnBack.BackColor = Color.FromArgb(50, 50, 55);
-            btnBack.ForeColor = Color.White;
+            btnBack.BackColor = UiTheme.SecondaryButton;
+            btnBack.ForeColor = UiTheme.SecondaryButtonText;
             btnBack.FlatStyle = FlatStyle.Flat;
-            btnBack.FlatAppearance.BorderSize = 0;
+            btnBack.FlatAppearance.BorderSize = 1;
+            btnBack.FlatAppearance.BorderColor = UiTheme.Border;
 
-            this.BackColor = Color.FromArgb(45, 45, 48);
-            panelTop.BackColor = Color.FromArgb(45, 45, 48);
-            panelScroll.BackColor = Color.FromArgb(30, 30, 30);
+            this.BackColor = UiTheme.Background;
+            panelTop.BackColor = UiTheme.Header;
+            panelScroll.BackColor = UiTheme.Surface;
         }
 
         //  Основная загрузка всех данных для карточки уязвимости
@@ -264,21 +266,21 @@ namespace Vullnerability
                 RowHeadersVisible = false,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells,
-                BackgroundColor = Color.FromArgb(30, 30, 30),
+                BackgroundColor = UiTheme.Surface,
                 BorderStyle = BorderStyle.None,
                 Dock = DockStyle.Fill,
                 Margin = new Padding(2),
                 ScrollBars = ScrollBars.Vertical
             };
 
-            dgv.DefaultCellStyle.BackColor = Color.FromArgb(38, 38, 42);
-            dgv.DefaultCellStyle.ForeColor = Color.White;
+            dgv.DefaultCellStyle.BackColor = UiTheme.Surface;
+            dgv.DefaultCellStyle.ForeColor = UiTheme.TextPrimary;
             dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 65);
-            dgv.DefaultCellStyle.SelectionForeColor = Color.White;
-            dgv.GridColor = Color.FromArgb(70, 70, 70);
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 55);
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(212, 226, 244);
+            dgv.DefaultCellStyle.SelectionForeColor = UiTheme.TextPrimary;
+            dgv.GridColor = UiTheme.Border;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = UiTheme.Header;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = UiTheme.TextPrimary;
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font(this.Font.FontFamily, 8, FontStyle.Bold);
             dgv.EnableHeadersVisualStyles = false;
 
@@ -321,8 +323,8 @@ namespace Vullnerability
             var rtb = new RichTextBox
             {
                 ReadOnly = true,
-                BackColor = Color.FromArgb(38, 38, 42),
-                ForeColor = Color.White,
+                BackColor = UiTheme.Surface,
+                ForeColor = UiTheme.TextPrimary,
                 BorderStyle = BorderStyle.None,
                 Font = new Font(this.Font.FontFamily, 9),
                 Dock = DockStyle.Fill,
@@ -352,8 +354,8 @@ namespace Vullnerability
             return new Label
             {
                 Text = text,
-                BackColor = Color.FromArgb(50, 50, 55),
-                ForeColor = Color.White,
+                BackColor = UiTheme.Header,
+                ForeColor = UiTheme.TextPrimary,
                 Font = new Font(this.Font.FontFamily, 9, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleLeft,
                 Padding = new Padding(8, 6, 8, 6),
@@ -373,8 +375,8 @@ namespace Vullnerability
                 ReadOnly = true,
                 WordWrap = true,
                 ScrollBars = ScrollBars.None,
-                BackColor = Color.FromArgb(38, 38, 42),
-                ForeColor = Color.White,
+                BackColor = UiTheme.Surface,
+                ForeColor = UiTheme.TextPrimary,
                 BorderStyle = BorderStyle.None,
                 Font = new Font(this.Font.FontFamily, 9),
                 Dock = DockStyle.Fill,
