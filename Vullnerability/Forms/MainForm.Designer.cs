@@ -83,7 +83,6 @@
             this.tabsRoot = new System.Windows.Forms.TabControl();
             this.tabVulns = new System.Windows.Forms.TabPage();
             this.tabStats = new System.Windows.Forms.TabPage();
-            this.stats3d = new Vullnerability.Forms.Stats3dControl();
             this.tabsRoot.SuspendLayout();
             this.tabVulns.SuspendLayout();
             this.tabStats.SuspendLayout();
@@ -917,24 +916,13 @@
             // tabStats
             // 
             this.tabStats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.tabStats.Controls.Add(this.stats3d);
             this.tabStats.Location = new System.Drawing.Point(4, 28);
             this.tabStats.Name = "tabStats";
             this.tabStats.Padding = new System.Windows.Forms.Padding(0);
             this.tabStats.Size = new System.Drawing.Size(1894, 959);
             this.tabStats.TabIndex = 1;
             this.tabStats.Text = "Статистика (3D)";
-            // 
-            // stats3d
-            // 
-            this.stats3d.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.stats3d.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stats3d.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.stats3d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
-            this.stats3d.Location = new System.Drawing.Point(0, 0);
-            this.stats3d.Name = "stats3d";
-            this.stats3d.Size = new System.Drawing.Size(1894, 959);
-            this.stats3d.TabIndex = 0;
+
             // 
             // MainForm
             // 
@@ -1030,6 +1018,5 @@
         private System.Windows.Forms.TabControl tabsRoot;
         private System.Windows.Forms.TabPage tabVulns;
         private System.Windows.Forms.TabPage tabStats;
-        private Vullnerability.Forms.Stats3dControl stats3d;
     }
 }
