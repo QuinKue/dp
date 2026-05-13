@@ -11,11 +11,13 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OfficeOpenXml;
-using Vullnerability.db;
+using Vullnerability.Data;
+using Vullnerability.Services;
+using Vullnerability.Utils;
 
-namespace Vullnerability
+namespace Vullnerability.Forms
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private readonly VulnDbContext db = new VulnDbContext();
         private int _pageSize = 100;
@@ -28,9 +30,9 @@ namespace Vullnerability
 
         private const string ExcelUrl = "https://bdu.fstec.ru/files/documents/vullist.xlsx";
 
-        public Form1() : this(null) { }
+        public MainForm() : this(null) { }
 
-        public Form1(string loggedInUserName)
+        public MainForm(string loggedInUserName)
         {
             InitializeComponent();
 
@@ -61,7 +63,7 @@ namespace Vullnerability
             WireSearchEnter();
         }
 
-        // Существующий layout верстался прямо на Form1 (Dock=Left/Right/Fill).
+        // Существующий layout верстался прямо на MainForm (Dock=Left/Right/Fill).
         // Заворачиваем те же 3 панели в TabPage «Уязвимости», а второй TabPage —
         // под визуализацию статистики (Stats3dControl).
         private void BuildTabbedLayout()
@@ -85,11 +87,17 @@ namespace Vullnerability
                 Padding = new Padding(0),
                 BackColor = UiTheme.Background,
             };
+            var tabScanner = new TabPage("Персональный сканер рисков")
+            {
+                Name = "tabScanner",
+                Padding = new Padding(0),
+                BackColor = UiTheme.Background,
+            };
 
             // Снимаем имеющиеся 3 панели с формы и кладём в первую вкладку.
             // Важно сохранить порядок добавления: при Dock=Fill последний добавленный
             // оказывается «нижним» по Z-order и занимает остаток места.
-            // Текущий порядок в Form1.Designer: panelCenter (Fill), panelRight (Right),
+            // Текущий порядок в MainForm.Designer: panelCenter (Fill), panelRight (Right),
             // panelFilters (Left). Сохраняем его.
             var keepOrder = new Control[] { panelCenter, panelRight, panelFilters };
 
@@ -103,8 +111,12 @@ namespace Vullnerability
             var stats = new Stats3dControl { Dock = DockStyle.Fill };
             tabStats.Controls.Add(stats);
 
+            var scanner = new ScannerForm { Dock = DockStyle.Fill };
+            tabScanner.Controls.Add(scanner);
+
             tabs.TabPages.Add(tabVulns);
             tabs.TabPages.Add(tabStats);
+            tabs.TabPages.Add(tabScanner);
             this.Controls.Add(tabs);
         }
 
@@ -537,7 +549,7 @@ namespace Vullnerability
         {
             if (lstRecentVulns.SelectedIndex < 0) return;
             var vuln = _recentVulns[lstRecentVulns.SelectedIndex];
-            using (var form = new VullDetailsForm(vuln.Id)) form.ShowDialog();
+            using (var form = new VulnerabilityDetailsForm(vuln.Id)) form.ShowDialog();
         }
 
         private void dgvVulns_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -545,7 +557,7 @@ namespace Vullnerability
             if (e.RowIndex < 0 || e.RowIndex >= dgvVulns.Rows.Count) return;
             var vuln = dgvVulns.Rows[e.RowIndex].Tag as Vulnerability;
             if (vuln == null) return;
-            using (var form = new VullDetailsForm(vuln.Id)) form.ShowDialog();
+            using (var form = new VulnerabilityDetailsForm(vuln.Id)) form.ShowDialog();
         }
 
         // ---- Отрисовка текущей страницы ----

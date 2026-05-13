@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-namespace Vullnerability.db
+namespace Vullnerability.Data
 {
     // EF6 Code First контекст для SQLite-БД с уязвимостями.
     // Connection string и файл .sqlite готовит SqliteBootstrap.
