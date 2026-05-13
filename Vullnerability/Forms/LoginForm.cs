@@ -15,7 +15,6 @@ namespace Vullnerability.Forms
         public LoginForm()
         {
             InitializeComponent();
-            UiTheme.Apply(this);
             this.AcceptButton = btnLogin;
             txtUsername.KeyDown += LoginField_KeyDown;
             txtPassword.KeyDown += LoginField_KeyDown;

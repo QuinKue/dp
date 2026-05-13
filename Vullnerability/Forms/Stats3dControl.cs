@@ -16,11 +16,10 @@ namespace Vullnerability.Forms
     // на основе агрегатов по таблице vulnerabilities. Срез выбирается в комбобоксе:
     //   - по уровню опасности;
     //   - по году публикации;
-    //   - по статусу;
-    //   - по CVSS 3.0 (диапазоны).
+    //   - по статусу.
     public sealed class Stats3dControl : UserControl
     {
-        private enum Slice { Severity, Year, Status, CvssRange }
+        private enum Slice { Severity, Year, Status }
 
         private struct Bar
         {
@@ -75,7 +74,6 @@ namespace Vullnerability.Forms
                 "По уровню опасности",
                 "По году публикации",
                 "По статусу",
-                "По CVSS 3.0",
             });
             _cmbSlice.SelectedIndex = 0;
             _cmbSlice.SelectedIndexChanged += (s, e) => ReloadAsync();
@@ -180,11 +178,8 @@ namespace Vullnerability.Forms
                         bars = LoadByYear(ctx);
                         break;
                     case Slice.Status:
-                        bars = LoadByStatus(ctx);
-                        break;
-                    case Slice.CvssRange:
                     default:
-                        bars = LoadByCvssRange(ctx);
+                        bars = LoadByStatus(ctx);
                         break;
                 }
                 return new SliceData { Bars = bars, Total = total };
@@ -261,44 +256,6 @@ namespace Vullnerability.Forms
                     Label = r.Name ?? "Не указан",
                     Count = r.Count,
                     Color = palette[i++ % palette.Length],
-                })
-                .ToArray();
-        }
-
-        private struct CvssRange
-        {
-            public string Label;
-            public double Lo;
-            public double Hi;
-            public Color Color;
-        }
-
-        private static Bar[] LoadByCvssRange(VulnDbContext ctx)
-        {
-            // Размер выборки контролируем сами: тянем скоры и группируем в памяти,
-            // SQLite + EF неудобно делать CASE WHEN-биннинг в LINQ.
-            var scores = ctx.Vulnerabilities.AsNoTracking()
-                .Where(v => v.Cvss3_0_Score != null)
-                .Select(v => v.Cvss3_0_Score)
-                .ToList();
-
-            var ranges = new[]
-            {
-                new CvssRange { Label = "0.0 — 3.9 низкий",       Lo = 0.0, Hi = 3.9,  Color = UiTheme.SeverityLow },
-                new CvssRange { Label = "4.0 — 6.9 средний",      Lo = 4.0, Hi = 6.9,  Color = UiTheme.SeverityMedium },
-                new CvssRange { Label = "7.0 — 8.9 высокий",      Lo = 7.0, Hi = 8.9,  Color = UiTheme.SeverityHigh },
-                new CvssRange { Label = "9.0 — 10.0 критический", Lo = 9.0, Hi = 10.0, Color = UiTheme.SeverityCritical },
-            };
-
-            return ranges
-                .Select(r =>
-                {
-                    int cnt = scores.Count(s =>
-                    {
-                        double d = (double)s.Value;
-                        return d >= r.Lo && d <= r.Hi;
-                    });
-                    return new Bar { Label = r.Label, Count = cnt, Color = r.Color };
                 })
                 .ToArray();
         }

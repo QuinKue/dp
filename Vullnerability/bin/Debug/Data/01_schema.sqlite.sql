@@ -156,18 +156,6 @@ CREATE TABLE users (
 );
 
 -- ============================================================================
--- ПОЛЬЗОВАТЕЛЬСКОЕ ПО (для модуля «Персональный сканер рисков»)
--- ============================================================================
-CREATE TABLE user_software (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    software_name TEXT    NOT NULL,
-    version       TEXT    NULL,
-    is_critical   INTEGER NOT NULL DEFAULT 0,
-    created_at    TEXT    NOT NULL
-);
-CREATE INDEX IX_user_software_name ON user_software (software_name);
-
--- ============================================================================
 -- ОСНОВНАЯ ТАБЛИЦА
 -- ============================================================================
 
