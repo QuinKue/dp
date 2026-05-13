@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Vullnerability
+namespace Vullnerability.Utils
 {
     // Светлая тема для всего приложения. Цветовая палитра спокойная, блоки
     // отличаются по фону (Surface / Card / Header), чтобы они визуально не сливались.
@@ -255,7 +255,7 @@ namespace Vullnerability
             };
         }
 
-        // Цвет полоски по уровню опасности — используется и в Form1, и в графике.
+        // Цвет полоски по уровню опасности — используется и в MainForm, и в графике.
         public static Color SeverityColor(string severityKeyword)
         {
             if (string.IsNullOrEmpty(severityKeyword)) return SeverityUnknown;

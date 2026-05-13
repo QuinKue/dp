@@ -7,9 +7,10 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Vullnerability.db;
+using Vullnerability.Data;
+using Vullnerability.Utils;
 
-namespace Vullnerability
+namespace Vullnerability.Forms
 {
     // Вкладка «Статистика». Рисует 3D-вид столбчатой диаграммы (изометрия + тень)
     // на основе агрегатов по таблице vulnerabilities. Срез выбирается в комбобоксе:

@@ -1,117 +1,16 @@
 ﻿using System;
 using System.Data.SQLite;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Forms;
-using Vullnerability.db;
+using Vullnerability.Data;
 
-namespace Vullnerability
+namespace Vullnerability.Services
 {
-    // Стартовое окно. Логин/регистрация. После успешного входа открывается Form1.
-    // Пользователи хранятся в той же sqlite-БД (таблица users), пароли — соль + SHA-256.
-    public partial class LoginForm : Form
-    {
-        // Имя залогиненного пользователя — Form1 может вывести его в заголовке.
-        public string LoggedInUserName { get; private set; }
-
-        public LoginForm()
-        {
-            InitializeComponent();
-            UiTheme.Apply(this);
-
-            // Enter в полях = клик «Войти»
-            this.AcceptButton = btnLogin;
-
-            txtUsername.KeyDown += LoginField_KeyDown;
-            txtPassword.KeyDown += LoginField_KeyDown;
-        }
-
-        private void LoginField_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                e.Handled = true;
-                btnLogin_Click(btnLogin, EventArgs.Empty);
-            }
-        }
-
-        private void btnLogin_Click(object sender, EventArgs e)
-        {
-            var username = (txtUsername.Text ?? string.Empty).Trim();
-            var password = txtPassword.Text ?? string.Empty;
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                ShowError("Введите имя пользователя и пароль");
-                return;
-            }
-
-            try
-            {
-                if (UserStore.VerifyCredentials(username, password))
-                {
-                    LoggedInUserName = username;
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-                else
-                {
-                    ShowError("Неверное имя пользователя или пароль");
-                    txtPassword.SelectAll();
-                    txtPassword.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowError("Не удалось проверить пользователя:\n" + ex.Message);
-            }
-        }
-
-        private void btnRegister_Click(object sender, EventArgs e)
-        {
-            var username = (txtUsername.Text ?? string.Empty).Trim();
-            var password = txtPassword.Text ?? string.Empty;
-
-            if (string.IsNullOrEmpty(username) || password.Length < 4)
-            {
-                ShowError("Введите имя пользователя и пароль (минимум 4 символа)");
-                return;
-            }
-
-            try
-            {
-                if (UserStore.UserExists(username))
-                {
-                    ShowError("Пользователь с таким именем уже существует");
-                    return;
-                }
-
-                UserStore.CreateUser(username, password);
-                lblStatus.ForeColor = UiTheme.TextPrimary;
-                lblStatus.Text = "Пользователь создан, можно войти";
-            }
-            catch (Exception ex)
-            {
-                ShowError("Не удалось создать пользователя:\n" + ex.Message);
-            }
-        }
-
-        private void ShowError(string text)
-        {
-            lblStatus.ForeColor = UiTheme.SeverityCritical;
-            lblStatus.Text = text;
-        }
-    }
-
     // Работа с таблицей users. Никаких EF — обычный System.Data.SQLite,
     // чтобы не дёргать DbContext до подтверждения логина.
-    internal static class UserStore
+    public static class UserStore
     {
-        // SHA-256(salt || password). Соль — 16 случайных байт, хранится в БД base64.
+        // SHA-256(salt || password). Соль — 16 случайных байт, в БД хранится в base64.
         private const int SaltSize = 16;
         // Дефолтный администратор, чтобы сразу можно было войти на свежей БД.
         public const string DefaultAdminLogin = "admin";

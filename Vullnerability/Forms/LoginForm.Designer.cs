@@ -1,4 +1,4 @@
-﻿namespace Vullnerability
+﻿namespace Vullnerability.Forms
 {
     partial class LoginForm
     {

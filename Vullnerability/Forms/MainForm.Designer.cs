@@ -1,6 +1,6 @@
-﻿namespace Vullnerability
+﻿namespace Vullnerability.Forms
 {
-    partial class Form1
+    partial class MainForm
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -881,7 +881,7 @@
             this.lblLastChanges.Text = "ПОСЛЕДНИЕ ИЗМЕНЕНИЯ";
             this.lblLastChanges.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -892,7 +892,7 @@
             this.Controls.Add(this.panelFilters);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.MinimumSize = new System.Drawing.Size(1918, 1030);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Справочник уязвимостей";
             this.panelFilters.ResumeLayout(false);

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using Vullnerability.db;
+using Vullnerability.Data;
+using Vullnerability.Forms;
 
 namespace Vullnerability
 {
@@ -54,7 +55,7 @@ namespace Vullnerability
                     if (result != DialogResult.OK) return;
 
                     // 2) Основное окно — запускается только после успешного входа
-                    Application.Run(new Form1(login.LoggedInUserName));
+                    Application.Run(new MainForm(login.LoggedInUserName));
                 }
             }
         }

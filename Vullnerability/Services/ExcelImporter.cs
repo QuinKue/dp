@@ -7,8 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using OfficeOpenXml;
+using Vullnerability.Data;
 
-namespace Vullnerability.db
+namespace Vullnerability.Services
 {
     // Читает vullist.xlsx БДУ ФСТЭК и льёт в SQLite-БД батчами:
     // все INSERT'ы прогоняем в одной транзакции, временные id для связей — отрицательные.
@@ -311,7 +312,7 @@ namespace Vullnerability.db
             int? incidentId = GetOrAdd(incidents, "incident_relations", "name", FirstOf(GetCell(ws, row, "Связь с инцидентами ИБ")), maxLen: 64);
 
             // CWE бывает несколько в одной ячейке: «… (CWE-122), … (CWE-416)» — основные кладём
-            // в vulnerability_cwes, а «первый» в vulnerabilities.cwe_id (для старого фильтра Form1)
+            // в vulnerability_cwes, а «первый» в vulnerabilities.cwe_id (для старого фильтра MainForm)
             string cweCodesRaw = GetCell(ws, row, "Тип ошибки CWE");
             string cweDescRaw = GetCell(ws, row, "Описание ошибки CWE");
             var cweCodeList = ExtractCweCodes(cweCodesRaw);

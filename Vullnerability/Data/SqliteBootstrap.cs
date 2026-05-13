@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace Vullnerability.db
+namespace Vullnerability.Data
 {
     // Создаёт файл БД при первом запуске и накатывает на него схему
     // из 01_schema.sqlite.sql. Должно вызываться до того, как EF откроет контекст.
@@ -105,17 +105,25 @@ namespace Vullnerability.db
         private static string LoadSchemaScript()
         {
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string path = Path.Combine(baseDir, SchemaFileName);
-
-            if (!File.Exists(path))
+            // Файл схемы лежит в проекте в Data/, MSBuild сохраняет относительный путь
+            // при копировании в output, поэтому пробуем и плоский путь, и /Data/.
+            string[] candidates =
             {
-                throw new FileNotFoundException(
-                    $"Не найден файл схемы '{SchemaFileName}' в каталоге '{baseDir}'. " +
-                    "Проверь, что у файла стоит 'Copy to Output Directory: Copy if newer'.",
-                    path);
+                Path.Combine(baseDir, SchemaFileName),
+                Path.Combine(baseDir, "Data", SchemaFileName),
+            };
+
+            foreach (var path in candidates)
+            {
+                if (File.Exists(path))
+                    return File.ReadAllText(path, Encoding.UTF8);
             }
 
-            return File.ReadAllText(path, Encoding.UTF8);
+            string dataDir = Path.Combine(baseDir, "Data");
+            throw new FileNotFoundException(
+                $"Не найден файл схемы '{SchemaFileName}' (искал в '{baseDir}' и '{dataDir}'). " +
+                "Проверь, что у файла стоит 'Copy to Output Directory: Copy if newer'.",
+                candidates[0]);
         }
 
         private static void ExecuteSchemaOnFreshDb(string dbPath, string schemaSql)
@@ -146,7 +154,8 @@ namespace Vullnerability.db
             }
         }
 
-        // CREATE TABLE IF NOT EXISTS users — на случай старых баз без таблицы.
+        // CREATE TABLE IF NOT EXISTS — лёгкая ручная миграция для старых баз,
+        // в которых нет таблиц users / user_software.
         private static void EnsureUsersTable(string dbPath)
         {
             try
@@ -166,13 +175,21 @@ CREATE TABLE IF NOT EXISTS users (
     password_salt TEXT    NOT NULL,
     created_at    TEXT    NOT NULL,
     CONSTRAINT UQ_users_username UNIQUE (username)
-);";
+);
+CREATE TABLE IF NOT EXISTS user_software (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    software_name TEXT    NOT NULL,
+    version       TEXT    NULL,
+    is_critical   INTEGER NOT NULL DEFAULT 0,
+    created_at    TEXT    NOT NULL
+);
+CREATE INDEX IF NOT EXISTS IX_user_software_name ON user_software (software_name);";
                         cmd.ExecuteNonQuery();
                     }
                 }
 
                 // Поднимаем дефолтного admin/admin, если пользователей нет.
-                Vullnerability.UserStore.EnsureDefaultUser();
+                Vullnerability.Services.UserStore.EnsureDefaultUser();
             }
             catch
             {
