@@ -28,7 +28,9 @@ namespace Vullnerability
 
         private const string ExcelUrl = "https://bdu.fstec.ru/files/documents/vullist.xlsx";
 
-        public Form1()
+        public Form1() : this(null) { }
+
+        public Form1(string loggedInUserName)
         {
             InitializeComponent();
 
@@ -40,6 +42,16 @@ namespace Vullnerability
 
             ExcelPackage.License.SetNonCommercialPersonal("YourName");
 
+            // Имя залогиненного пользователя — в заголовок окна
+            if (!string.IsNullOrEmpty(loggedInUserName))
+                this.Text = $"Справочник уязвимостей — {loggedInUserName}";
+
+            // Светлая тема + перенос существующего UI на 1-ю вкладку и
+            // добавление 2-й вкладки со статистикой.
+            BuildTabbedLayout();
+            UiTheme.Apply(this);
+            FixSeverityHeaderAfterTheme();
+
             LoadDictionaries();
             SetupSortCombo();
             SetupPageSizeCombo();
@@ -47,6 +59,64 @@ namespace Vullnerability
             InitRecentList();
             LoadRecentVulns();
             WireSearchEnter();
+        }
+
+        // Существующий layout верстался прямо на Form1 (Dock=Left/Right/Fill).
+        // Заворачиваем те же 3 панели в TabPage «Уязвимости», а второй TabPage —
+        // под визуализацию статистики (Stats3dControl).
+        private void BuildTabbedLayout()
+        {
+            var tabs = new TabControl
+            {
+                Name = "tabsRoot",
+                Dock = DockStyle.Fill,
+                Alignment = TabAlignment.Top,
+            };
+
+            var tabVulns = new TabPage("Уязвимости")
+            {
+                Name = "tabVulns",
+                Padding = new Padding(0),
+                BackColor = UiTheme.Background,
+            };
+            var tabStats = new TabPage("Статистика (3D)")
+            {
+                Name = "tabStats",
+                Padding = new Padding(0),
+                BackColor = UiTheme.Background,
+            };
+
+            // Снимаем имеющиеся 3 панели с формы и кладём в первую вкладку.
+            // Важно сохранить порядок добавления: при Dock=Fill последний добавленный
+            // оказывается «нижним» по Z-order и занимает остаток места.
+            // Текущий порядок в Form1.Designer: panelCenter (Fill), panelRight (Right),
+            // panelFilters (Left). Сохраняем его.
+            var keepOrder = new Control[] { panelCenter, panelRight, panelFilters };
+
+            foreach (var c in keepOrder)
+            {
+                if (c == null) continue;
+                this.Controls.Remove(c);
+                tabVulns.Controls.Add(c);
+            }
+
+            var stats = new Stats3dControl { Dock = DockStyle.Fill };
+            tabStats.Controls.Add(stats);
+
+            tabs.TabPages.Add(tabVulns);
+            tabs.TabPages.Add(tabStats);
+            this.Controls.Add(tabs);
+        }
+
+        // UiTheme.StyleDataGrid пересоздаёт DefaultCellStyle, поэтому раскраска
+        // первой колонки (полоска критичности) сбрасывается на следующем
+        // RefreshCurrentPage. Здесь явно фиксируем, что колонка "Severity"
+        // НЕ должна перекрашиваться чередованием строк.
+        private void FixSeverityHeaderAfterTheme()
+        {
+            if (dgvVulns == null || colSeverity == null) return;
+            colSeverity.DefaultCellStyle.BackColor = UiTheme.Surface;
+            colSeverity.DefaultCellStyle.SelectionBackColor = UiTheme.Surface;
         }
 
         // чтобы Enter в поле поиска сразу применял фильтр
@@ -363,7 +433,7 @@ namespace Vullnerability
 
             var dateSize = e.Graphics.MeasureString(date, e.Font, contentWidth);
             var dateRect = new RectangleF(contentLeft, contentTop, contentWidth, dateSize.Height);
-            using (var dateBrush = new SolidBrush(Color.FromArgb(180, 180, 180)))
+            using (var dateBrush = new SolidBrush(UiTheme.TextMuted))
                 e.Graphics.DrawString(date, e.Font, dateBrush, dateRect);
 
             // описание ниже с переносом по словам
@@ -373,7 +443,7 @@ namespace Vullnerability
                 var descRect = new RectangleF(contentLeft, descTop, contentWidth,
                                                e.Bounds.Bottom - descTop);
                 using (var fmt = new StringFormat(StringFormatFlags.LineLimit) { Trimming = StringTrimming.None })
-                using (var brush = new SolidBrush(e.ForeColor == Color.Empty ? Color.White : e.ForeColor))
+                using (var brush = new SolidBrush(UiTheme.TextPrimary))
                     e.Graphics.DrawString(description, e.Font, brush, descRect, fmt);
             }
 
@@ -514,12 +584,7 @@ namespace Vullnerability
 
                 // левая полоска — цвет по самому безопасному из уровней
                 var sev = PickLowestSeverity(vuln.SeverityText, vuln.SeverityLevel?.Name);
-                Color sevColor;
-                if (sev.Contains("крит")) sevColor = Color.FromArgb(200, 50, 50);
-                else if (sev.Contains("высок")) sevColor = Color.FromArgb(220, 120, 40);
-                else if (sev.Contains("сред")) sevColor = Color.FromArgb(200, 180, 50);
-                else if (sev.Contains("низк")) sevColor = Color.FromArgb(80, 160, 80);
-                else sevColor = Color.FromArgb(80, 80, 80);
+                Color sevColor = UiTheme.SeverityColor(sev);
                 row.Cells[0].Style.BackColor = sevColor;
                 row.Cells[0].Style.SelectionBackColor = sevColor;
             }

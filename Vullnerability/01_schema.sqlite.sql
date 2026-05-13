@@ -45,6 +45,7 @@ DROP TABLE IF EXISTS fix_methods;
 DROP TABLE IF EXISTS vuln_states;
 DROP TABLE IF EXISTS incident_relations;
 DROP TABLE IF EXISTS cwes;
+DROP TABLE IF EXISTS users;
 
 -- ============================================================================
 -- СПРАВОЧНИКИ
@@ -138,6 +139,20 @@ CREATE TABLE cwes (
     code        TEXT NOT NULL,
     description TEXT NULL,
     CONSTRAINT UQ_cwes_code UNIQUE (code)
+);
+
+-- ============================================================================
+-- ПОЛЬЗОВАТЕЛИ (для формы авторизации)
+-- password_hash = base64(SHA-256(salt || utf8(password)))
+-- password_salt = base64(16 случайных байт)
+-- ============================================================================
+CREATE TABLE users (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    username      TEXT    NOT NULL,
+    password_hash TEXT    NOT NULL,
+    password_salt TEXT    NOT NULL,
+    created_at    TEXT    NOT NULL,
+    CONSTRAINT UQ_users_username UNIQUE (username)
 );
 
 -- ============================================================================
