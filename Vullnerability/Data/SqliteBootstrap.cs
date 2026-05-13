@@ -155,7 +155,7 @@ namespace Vullnerability.Data
         }
 
         // CREATE TABLE IF NOT EXISTS — лёгкая ручная миграция для старых баз,
-        // в которых нет таблиц users / user_software.
+        // в которых нет таблицы users.
         private static void EnsureUsersTable(string dbPath)
         {
             try
@@ -175,15 +175,7 @@ CREATE TABLE IF NOT EXISTS users (
     password_salt TEXT    NOT NULL,
     created_at    TEXT    NOT NULL,
     CONSTRAINT UQ_users_username UNIQUE (username)
-);
-CREATE TABLE IF NOT EXISTS user_software (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    software_name TEXT    NOT NULL,
-    version       TEXT    NULL,
-    is_critical   INTEGER NOT NULL DEFAULT 0,
-    created_at    TEXT    NOT NULL
-);
-CREATE INDEX IF NOT EXISTS IX_user_software_name ON user_software (software_name);";
+);";
                         cmd.ExecuteNonQuery();
                     }
                 }

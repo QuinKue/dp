@@ -48,12 +48,6 @@ namespace Vullnerability.Forms
             if (!string.IsNullOrEmpty(loggedInUserName))
                 this.Text = $"Справочник уязвимостей — {loggedInUserName}";
 
-            // Светлая тема + перенос существующего UI на 1-ю вкладку и
-            // добавление 2-й вкладки со статистикой.
-            BuildTabbedLayout();
-            UiTheme.Apply(this);
-            FixSeverityHeaderAfterTheme();
-
             LoadDictionaries();
             SetupSortCombo();
             SetupPageSizeCombo();
@@ -61,74 +55,6 @@ namespace Vullnerability.Forms
             InitRecentList();
             LoadRecentVulns();
             WireSearchEnter();
-        }
-
-        // Существующий layout верстался прямо на MainForm (Dock=Left/Right/Fill).
-        // Заворачиваем те же 3 панели в TabPage «Уязвимости», а второй TabPage —
-        // под визуализацию статистики (Stats3dControl).
-        private void BuildTabbedLayout()
-        {
-            var tabs = new TabControl
-            {
-                Name = "tabsRoot",
-                Dock = DockStyle.Fill,
-                Alignment = TabAlignment.Top,
-            };
-
-            var tabVulns = new TabPage("Уязвимости")
-            {
-                Name = "tabVulns",
-                Padding = new Padding(0),
-                BackColor = UiTheme.Background,
-            };
-            var tabStats = new TabPage("Статистика (3D)")
-            {
-                Name = "tabStats",
-                Padding = new Padding(0),
-                BackColor = UiTheme.Background,
-            };
-            var tabScanner = new TabPage("Персональный сканер рисков")
-            {
-                Name = "tabScanner",
-                Padding = new Padding(0),
-                BackColor = UiTheme.Background,
-            };
-
-            // Снимаем имеющиеся 3 панели с формы и кладём в первую вкладку.
-            // Важно сохранить порядок добавления: при Dock=Fill последний добавленный
-            // оказывается «нижним» по Z-order и занимает остаток места.
-            // Текущий порядок в MainForm.Designer: panelCenter (Fill), panelRight (Right),
-            // panelFilters (Left). Сохраняем его.
-            var keepOrder = new Control[] { panelCenter, panelRight, panelFilters };
-
-            foreach (var c in keepOrder)
-            {
-                if (c == null) continue;
-                this.Controls.Remove(c);
-                tabVulns.Controls.Add(c);
-            }
-
-            var stats = new Stats3dControl { Dock = DockStyle.Fill };
-            tabStats.Controls.Add(stats);
-
-            var scanner = new ScannerForm { Dock = DockStyle.Fill };
-            tabScanner.Controls.Add(scanner);
-
-            tabs.TabPages.Add(tabVulns);
-            tabs.TabPages.Add(tabStats);
-            tabs.TabPages.Add(tabScanner);
-            this.Controls.Add(tabs);
-        }
-
-        // UiTheme.StyleDataGrid пересоздаёт DefaultCellStyle, поэтому раскраска
-        // первой колонки (полоска критичности) сбрасывается на следующем
-        // RefreshCurrentPage. Здесь явно фиксируем, что колонка "Severity"
-        // НЕ должна перекрашиваться чередованием строк.
-        private void FixSeverityHeaderAfterTheme()
-        {
-            if (dgvVulns == null || colSeverity == null) return;
-            colSeverity.DefaultCellStyle.BackColor = UiTheme.Surface;
-            colSeverity.DefaultCellStyle.SelectionBackColor = UiTheme.Surface;
         }
 
         // чтобы Enter в поле поиска сразу применял фильтр
@@ -458,6 +384,12 @@ namespace Vullnerability.Forms
                 using (var brush = new SolidBrush(UiTheme.TextPrimary))
                     e.Graphics.DrawString(description, e.Font, brush, descRect, fmt);
             }
+
+            // тонкая разделительная линия между записями
+            using (var sepPen = new Pen(UiTheme.Border))
+                e.Graphics.DrawLine(sepPen,
+                    e.Bounds.Left + RecentItemSidePad, e.Bounds.Bottom - 1,
+                    e.Bounds.Right - RecentItemSidePad, e.Bounds.Bottom - 1);
 
             e.DrawFocusRectangle();
         }

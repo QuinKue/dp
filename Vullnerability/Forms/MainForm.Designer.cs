@@ -80,6 +80,13 @@
             this.panelRight = new System.Windows.Forms.Panel();
             this.lstRecentVulns = new System.Windows.Forms.ListBox();
             this.lblLastChanges = new System.Windows.Forms.Label();
+            this.tabsRoot = new System.Windows.Forms.TabControl();
+            this.tabVulns = new System.Windows.Forms.TabPage();
+            this.tabStats = new System.Windows.Forms.TabPage();
+            this.stats3d = new Vullnerability.Forms.Stats3dControl();
+            this.tabsRoot.SuspendLayout();
+            this.tabVulns.SuspendLayout();
+            this.tabStats.SuspendLayout();
             this.panelFilters.SuspendLayout();
             this.panelCenter.SuspendLayout();
             this.panelVullsWrap.SuspendLayout();
@@ -93,7 +100,7 @@
             // panelFilters
             // 
             this.panelFilters.AutoScroll = true;
-            this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.panelFilters.Controls.Add(this.chkUseDate);
             this.panelFilters.Controls.Add(this.btnApplyFilter);
             this.panelFilters.Controls.Add(this.btnResetFilter);
@@ -142,8 +149,8 @@
             // chkUseDate
             // 
             this.chkUseDate.BackColor = System.Drawing.Color.Transparent;
-            this.chkUseDate.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.chkUseDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.chkUseDate.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chkUseDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
             this.chkUseDate.Location = new System.Drawing.Point(8, 359);
             this.chkUseDate.Name = "chkUseDate";
             this.chkUseDate.Size = new System.Drawing.Size(368, 20);
@@ -153,10 +160,10 @@
             // 
             // btnApplyFilter
             // 
-            this.btnApplyFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(55)))));
+            this.btnApplyFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             this.btnApplyFilter.FlatAppearance.BorderSize = 0;
             this.btnApplyFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnApplyFilter.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnApplyFilter.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnApplyFilter.ForeColor = System.Drawing.Color.White;
             this.btnApplyFilter.Location = new System.Drawing.Point(128, 807);
             this.btnApplyFilter.Name = "btnApplyFilter";
@@ -168,11 +175,11 @@
             // 
             // btnResetFilter
             // 
-            this.btnResetFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
-            this.btnResetFilter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.btnResetFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(236)))), ((int)(((byte)(242)))));
+            this.btnResetFilter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(212)))), ((int)(((byte)(222)))));
             this.btnResetFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResetFilter.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnResetFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.btnResetFilter.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnResetFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
             this.btnResetFilter.Location = new System.Drawing.Point(8, 807);
             this.btnResetFilter.Name = "btnResetFilter";
             this.btnResetFilter.Size = new System.Drawing.Size(110, 30);
@@ -185,22 +192,22 @@
             // 
             this.cmbOsName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbOsName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbOsName.BackColor = System.Drawing.Color.White;
+            this.cmbOsName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbOsName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbOsName.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbOsName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbOsName.ForeColor = System.Drawing.Color.Black;
             this.cmbOsName.Location = new System.Drawing.Point(8, 771);
             this.cmbOsName.Name = "cmbOsName";
-            this.cmbOsName.Size = new System.Drawing.Size(368, 21);
+            this.cmbOsName.Size = new System.Drawing.Size(368, 27);
             this.cmbOsName.TabIndex = 41;
             // 
             // lblOsName
             // 
-            this.lblOsName.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblOsName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblOsName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblOsName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblOsName.Location = new System.Drawing.Point(8, 753);
             this.lblOsName.Name = "lblOsName";
-            this.lblOsName.Size = new System.Drawing.Size(368, 16);
+            this.lblOsName.Size = new System.Drawing.Size(368, 22);
             this.lblOsName.TabIndex = 40;
             this.lblOsName.Text = "Операционная система";
             // 
@@ -208,22 +215,22 @@
             // 
             this.cmbFixMethod.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbFixMethod.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbFixMethod.BackColor = System.Drawing.Color.White;
+            this.cmbFixMethod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbFixMethod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbFixMethod.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbFixMethod.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbFixMethod.ForeColor = System.Drawing.Color.Black;
             this.cmbFixMethod.Location = new System.Drawing.Point(8, 725);
             this.cmbFixMethod.Name = "cmbFixMethod";
-            this.cmbFixMethod.Size = new System.Drawing.Size(368, 21);
+            this.cmbFixMethod.Size = new System.Drawing.Size(368, 27);
             this.cmbFixMethod.TabIndex = 39;
             // 
             // lblFixMethod
             // 
-            this.lblFixMethod.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblFixMethod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblFixMethod.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblFixMethod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblFixMethod.Location = new System.Drawing.Point(8, 707);
             this.lblFixMethod.Name = "lblFixMethod";
-            this.lblFixMethod.Size = new System.Drawing.Size(368, 16);
+            this.lblFixMethod.Size = new System.Drawing.Size(368, 22);
             this.lblFixMethod.TabIndex = 38;
             this.lblFixMethod.Text = "Способ устранения";
             // 
@@ -231,43 +238,43 @@
             // 
             this.cmbExploitMethod.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbExploitMethod.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbExploitMethod.BackColor = System.Drawing.Color.White;
+            this.cmbExploitMethod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbExploitMethod.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbExploitMethod.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbExploitMethod.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbExploitMethod.ForeColor = System.Drawing.Color.Black;
             this.cmbExploitMethod.Location = new System.Drawing.Point(8, 679);
             this.cmbExploitMethod.Name = "cmbExploitMethod";
-            this.cmbExploitMethod.Size = new System.Drawing.Size(368, 21);
+            this.cmbExploitMethod.Size = new System.Drawing.Size(368, 27);
             this.cmbExploitMethod.TabIndex = 37;
             // 
             // lblExploitMethod
             // 
-            this.lblExploitMethod.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblExploitMethod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblExploitMethod.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblExploitMethod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblExploitMethod.Location = new System.Drawing.Point(8, 661);
             this.lblExploitMethod.Name = "lblExploitMethod";
-            this.lblExploitMethod.Size = new System.Drawing.Size(368, 16);
+            this.lblExploitMethod.Size = new System.Drawing.Size(368, 22);
             this.lblExploitMethod.TabIndex = 36;
             this.lblExploitMethod.Text = "Способ эксплуатации";
             // 
             // txtOtherId
             // 
-            this.txtOtherId.BackColor = System.Drawing.Color.White;
+            this.txtOtherId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.txtOtherId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtOtherId.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtOtherId.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtOtherId.ForeColor = System.Drawing.Color.Black;
             this.txtOtherId.Location = new System.Drawing.Point(8, 633);
             this.txtOtherId.Name = "txtOtherId";
-            this.txtOtherId.Size = new System.Drawing.Size(368, 23);
+            this.txtOtherId.Size = new System.Drawing.Size(368, 27);
             this.txtOtherId.TabIndex = 35;
             // 
             // lblOtherId
             // 
-            this.lblOtherId.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblOtherId.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblOtherId.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblOtherId.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblOtherId.Location = new System.Drawing.Point(8, 615);
             this.lblOtherId.Name = "lblOtherId";
-            this.lblOtherId.Size = new System.Drawing.Size(368, 16);
+            this.lblOtherId.Size = new System.Drawing.Size(368, 22);
             this.lblOtherId.TabIndex = 34;
             this.lblOtherId.Text = "Другие системы идентификации";
             // 
@@ -275,22 +282,22 @@
             // 
             this.cmbCweType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbCweType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbCweType.BackColor = System.Drawing.Color.White;
+            this.cmbCweType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbCweType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbCweType.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbCweType.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbCweType.ForeColor = System.Drawing.Color.Black;
             this.cmbCweType.Location = new System.Drawing.Point(8, 587);
             this.cmbCweType.Name = "cmbCweType";
-            this.cmbCweType.Size = new System.Drawing.Size(368, 21);
+            this.cmbCweType.Size = new System.Drawing.Size(368, 27);
             this.cmbCweType.TabIndex = 33;
             // 
             // lblCweType
             // 
-            this.lblCweType.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblCweType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblCweType.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblCweType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblCweType.Location = new System.Drawing.Point(8, 569);
             this.lblCweType.Name = "lblCweType";
-            this.lblCweType.Size = new System.Drawing.Size(368, 16);
+            this.lblCweType.Size = new System.Drawing.Size(368, 22);
             this.lblCweType.TabIndex = 32;
             this.lblCweType.Text = "Идентификатор типа ошибки";
             // 
@@ -298,22 +305,22 @@
             // 
             this.cmbDanger.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbDanger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbDanger.BackColor = System.Drawing.Color.White;
+            this.cmbDanger.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbDanger.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbDanger.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbDanger.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbDanger.ForeColor = System.Drawing.Color.Black;
             this.cmbDanger.Location = new System.Drawing.Point(8, 540);
             this.cmbDanger.Name = "cmbDanger";
-            this.cmbDanger.Size = new System.Drawing.Size(368, 21);
+            this.cmbDanger.Size = new System.Drawing.Size(368, 27);
             this.cmbDanger.TabIndex = 27;
             // 
             // lblDanger
             // 
-            this.lblDanger.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblDanger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblDanger.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblDanger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblDanger.Location = new System.Drawing.Point(8, 522);
             this.lblDanger.Name = "lblDanger";
-            this.lblDanger.Size = new System.Drawing.Size(368, 16);
+            this.lblDanger.Size = new System.Drawing.Size(368, 22);
             this.lblDanger.TabIndex = 26;
             this.lblDanger.Text = "Уровень опасности";
             // 
@@ -321,30 +328,30 @@
             // 
             this.cmbClass.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbClass.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbClass.BackColor = System.Drawing.Color.White;
+            this.cmbClass.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbClass.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbClass.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbClass.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbClass.ForeColor = System.Drawing.Color.Black;
             this.cmbClass.Location = new System.Drawing.Point(8, 494);
             this.cmbClass.Name = "cmbClass";
-            this.cmbClass.Size = new System.Drawing.Size(368, 21);
+            this.cmbClass.Size = new System.Drawing.Size(368, 27);
             this.cmbClass.TabIndex = 25;
             // 
             // lblClass
             // 
-            this.lblClass.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblClass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblClass.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblClass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblClass.Location = new System.Drawing.Point(8, 476);
             this.lblClass.Name = "lblClass";
-            this.lblClass.Size = new System.Drawing.Size(368, 16);
+            this.lblClass.Size = new System.Drawing.Size(368, 22);
             this.lblClass.TabIndex = 24;
             this.lblClass.Text = "Класс уязвимости";
             // 
             // cmbYearAdded
             // 
-            this.cmbYearAdded.BackColor = System.Drawing.Color.White;
+            this.cmbYearAdded.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbYearAdded.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbYearAdded.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbYearAdded.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbYearAdded.ForeColor = System.Drawing.Color.Black;
             this.cmbYearAdded.Location = new System.Drawing.Point(8, 448);
             this.cmbYearAdded.Name = "cmbYearAdded";
@@ -353,19 +360,19 @@
             // 
             // lblYearAdded
             // 
-            this.lblYearAdded.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblYearAdded.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblYearAdded.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblYearAdded.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblYearAdded.Location = new System.Drawing.Point(8, 430);
             this.lblYearAdded.Name = "lblYearAdded";
-            this.lblYearAdded.Size = new System.Drawing.Size(368, 16);
+            this.lblYearAdded.Size = new System.Drawing.Size(368, 22);
             this.lblYearAdded.TabIndex = 22;
             this.lblYearAdded.Text = "Год добавления";
             // 
             // chkHasIncidents
             // 
             this.chkHasIncidents.BackColor = System.Drawing.Color.Transparent;
-            this.chkHasIncidents.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.chkHasIncidents.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.chkHasIncidents.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chkHasIncidents.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
             this.chkHasIncidents.Location = new System.Drawing.Point(8, 407);
             this.chkHasIncidents.Name = "chkHasIncidents";
             this.chkHasIncidents.Size = new System.Drawing.Size(368, 20);
@@ -375,73 +382,73 @@
             // 
             // dtDateTo
             // 
-            this.dtDateTo.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dtDateTo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dtDateTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtDateTo.Location = new System.Drawing.Point(204, 379);
+            this.dtDateTo.Location = new System.Drawing.Point(212, 379);
             this.dtDateTo.Name = "dtDateTo";
-            this.dtDateTo.Size = new System.Drawing.Size(172, 23);
+            this.dtDateTo.Size = new System.Drawing.Size(164, 27);
             this.dtDateTo.TabIndex = 19;
             // 
             // lblDateTo
             // 
-            this.lblDateTo.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblDateTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
-            this.lblDateTo.Location = new System.Drawing.Point(180, 382);
+            this.lblDateTo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblDateTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
+            this.lblDateTo.Location = new System.Drawing.Point(184, 384);
             this.lblDateTo.Name = "lblDateTo";
-            this.lblDateTo.Size = new System.Drawing.Size(22, 16);
+            this.lblDateTo.Size = new System.Drawing.Size(24, 22);
             this.lblDateTo.TabIndex = 18;
             this.lblDateTo.Text = "по";
             // 
             // dtDateFrom
             // 
-            this.dtDateFrom.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dtDateFrom.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dtDateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtDateFrom.Location = new System.Drawing.Point(8, 379);
             this.dtDateFrom.Name = "dtDateFrom";
-            this.dtDateFrom.Size = new System.Drawing.Size(168, 23);
+            this.dtDateFrom.Size = new System.Drawing.Size(164, 27);
             this.dtDateFrom.TabIndex = 17;
             // 
             // cmbStatus
             // 
             this.cmbStatus.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbStatus.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbStatus.BackColor = System.Drawing.Color.White;
+            this.cmbStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbStatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbStatus.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbStatus.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbStatus.ForeColor = System.Drawing.Color.Black;
             this.cmbStatus.Location = new System.Drawing.Point(8, 332);
             this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(368, 21);
+            this.cmbStatus.Size = new System.Drawing.Size(368, 27);
             this.cmbStatus.TabIndex = 14;
             // 
             // lblStatus
             // 
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblStatus.Location = new System.Drawing.Point(8, 314);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(368, 16);
+            this.lblStatus.Size = new System.Drawing.Size(368, 22);
             this.lblStatus.TabIndex = 13;
             this.lblStatus.Text = "Статус уязвимости";
             // 
             // txtVersion
             // 
-            this.txtVersion.BackColor = System.Drawing.Color.White;
+            this.txtVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.txtVersion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtVersion.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtVersion.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtVersion.ForeColor = System.Drawing.Color.Black;
             this.txtVersion.Location = new System.Drawing.Point(8, 286);
             this.txtVersion.Name = "txtVersion";
-            this.txtVersion.Size = new System.Drawing.Size(368, 23);
+            this.txtVersion.Size = new System.Drawing.Size(368, 27);
             this.txtVersion.TabIndex = 12;
             // 
             // lblVersion
             // 
-            this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblVersion.Location = new System.Drawing.Point(8, 268);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(368, 16);
+            this.lblVersion.Size = new System.Drawing.Size(368, 22);
             this.lblVersion.TabIndex = 11;
             this.lblVersion.Text = "Версия ПО";
             // 
@@ -449,22 +456,22 @@
             // 
             this.cmbPlatform.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbPlatform.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbPlatform.BackColor = System.Drawing.Color.White;
+            this.cmbPlatform.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbPlatform.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbPlatform.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbPlatform.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbPlatform.ForeColor = System.Drawing.Color.Black;
             this.cmbPlatform.Location = new System.Drawing.Point(8, 240);
             this.cmbPlatform.Name = "cmbPlatform";
-            this.cmbPlatform.Size = new System.Drawing.Size(368, 21);
+            this.cmbPlatform.Size = new System.Drawing.Size(368, 27);
             this.cmbPlatform.TabIndex = 10;
             // 
             // lblPlatform
             // 
-            this.lblPlatform.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblPlatform.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblPlatform.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblPlatform.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblPlatform.Location = new System.Drawing.Point(8, 222);
             this.lblPlatform.Name = "lblPlatform";
-            this.lblPlatform.Size = new System.Drawing.Size(368, 16);
+            this.lblPlatform.Size = new System.Drawing.Size(368, 22);
             this.lblPlatform.TabIndex = 9;
             this.lblPlatform.Text = "Аппаратная платформа";
             // 
@@ -472,22 +479,22 @@
             // 
             this.cmbProduct.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbProduct.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbProduct.BackColor = System.Drawing.Color.White;
+            this.cmbProduct.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbProduct.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbProduct.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbProduct.ForeColor = System.Drawing.Color.Black;
             this.cmbProduct.Location = new System.Drawing.Point(8, 194);
             this.cmbProduct.Name = "cmbProduct";
-            this.cmbProduct.Size = new System.Drawing.Size(368, 21);
+            this.cmbProduct.Size = new System.Drawing.Size(368, 27);
             this.cmbProduct.TabIndex = 8;
             // 
             // lblProduct
             // 
-            this.lblProduct.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblProduct.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblProduct.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblProduct.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblProduct.Location = new System.Drawing.Point(8, 176);
             this.lblProduct.Name = "lblProduct";
-            this.lblProduct.Size = new System.Drawing.Size(368, 16);
+            this.lblProduct.Size = new System.Drawing.Size(368, 22);
             this.lblProduct.TabIndex = 7;
             this.lblProduct.Text = "Программное обеспечение";
             // 
@@ -495,22 +502,22 @@
             // 
             this.cmbProductType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbProductType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbProductType.BackColor = System.Drawing.Color.White;
+            this.cmbProductType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbProductType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbProductType.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbProductType.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbProductType.ForeColor = System.Drawing.Color.Black;
             this.cmbProductType.Location = new System.Drawing.Point(8, 148);
             this.cmbProductType.Name = "cmbProductType";
-            this.cmbProductType.Size = new System.Drawing.Size(368, 21);
+            this.cmbProductType.Size = new System.Drawing.Size(368, 27);
             this.cmbProductType.TabIndex = 6;
             // 
             // lblProductType
             // 
-            this.lblProductType.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblProductType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblProductType.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblProductType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblProductType.Location = new System.Drawing.Point(8, 130);
             this.lblProductType.Name = "lblProductType";
-            this.lblProductType.Size = new System.Drawing.Size(368, 16);
+            this.lblProductType.Size = new System.Drawing.Size(368, 22);
             this.lblProductType.TabIndex = 5;
             this.lblProductType.Text = "Тип ПО";
             // 
@@ -518,50 +525,50 @@
             // 
             this.cmbVendor.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbVendor.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbVendor.BackColor = System.Drawing.Color.White;
+            this.cmbVendor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.cmbVendor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbVendor.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbVendor.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbVendor.ForeColor = System.Drawing.Color.Black;
             this.cmbVendor.Location = new System.Drawing.Point(8, 102);
             this.cmbVendor.Name = "cmbVendor";
-            this.cmbVendor.Size = new System.Drawing.Size(368, 21);
+            this.cmbVendor.Size = new System.Drawing.Size(368, 27);
             this.cmbVendor.TabIndex = 4;
             // 
             // lblVendor
             // 
-            this.lblVendor.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblVendor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblVendor.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblVendor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblVendor.Location = new System.Drawing.Point(8, 84);
             this.lblVendor.Name = "lblVendor";
-            this.lblVendor.Size = new System.Drawing.Size(368, 16);
+            this.lblVendor.Size = new System.Drawing.Size(368, 22);
             this.lblVendor.TabIndex = 3;
             this.lblVendor.Text = "Производитель ПО";
             // 
             // txtSearchName
             // 
-            this.txtSearchName.BackColor = System.Drawing.Color.White;
+            this.txtSearchName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
             this.txtSearchName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSearchName.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtSearchName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtSearchName.ForeColor = System.Drawing.Color.Black;
             this.txtSearchName.Location = new System.Drawing.Point(8, 56);
             this.txtSearchName.Name = "txtSearchName";
-            this.txtSearchName.Size = new System.Drawing.Size(368, 23);
+            this.txtSearchName.Size = new System.Drawing.Size(368, 27);
             this.txtSearchName.TabIndex = 2;
             // 
             // lblSearchName
             // 
-            this.lblSearchName.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblSearchName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.lblSearchName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblSearchName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblSearchName.Location = new System.Drawing.Point(8, 38);
             this.lblSearchName.Name = "lblSearchName";
-            this.lblSearchName.Size = new System.Drawing.Size(368, 16);
+            this.lblSearchName.Size = new System.Drawing.Size(368, 22);
             this.lblSearchName.TabIndex = 1;
             this.lblSearchName.Text = "Контекстный поиск по названию уязвимости";
             // 
             // lblFilterTitle
             // 
             this.lblFilterTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblFilterTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(180)))), ((int)(((byte)(100)))));
+            this.lblFilterTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             this.lblFilterTitle.Location = new System.Drawing.Point(0, 8);
             this.lblFilterTitle.Name = "lblFilterTitle";
             this.lblFilterTitle.Size = new System.Drawing.Size(368, 22);
@@ -571,7 +578,7 @@
             // 
             // panelCenter
             // 
-            this.panelCenter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.panelCenter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.panelCenter.Controls.Add(this.panelVullsWrap);
             this.panelCenter.Controls.Add(this.panelBottomBar);
             this.panelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -596,10 +603,10 @@
             this.dgvVulns.AllowUserToAddRows = false;
             this.dgvVulns.AllowUserToDeleteRows = false;
             this.dgvVulns.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.dgvVulns.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvVulns.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvVulns.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.dgvVulns.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.dgvVulns.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvVulns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvVulns.ColumnHeadersVisible = false;
@@ -609,17 +616,17 @@
             this.colDesc,
             this.colDate});
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
             dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(70)))), ((int)(((byte)(40)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvVulns.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvVulns.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvVulns.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dgvVulns.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.dgvVulns.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dgvVulns.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(241)))), ((int)(((byte)(246)))));
             this.dgvVulns.Location = new System.Drawing.Point(0, 66);
             this.dgvVulns.MultiSelect = false;
             this.dgvVulns.Name = "dgvVulns";
@@ -644,7 +651,7 @@
             // 
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(180)))), ((int)(((byte)(100)))));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(8, 6, 4, 6);
             this.colBduId.DefaultCellStyle = dataGridViewCellStyle2;
             this.colBduId.HeaderText = "Идентификатор";
@@ -667,7 +674,7 @@
             // colDate
             // 
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.colDate.DefaultCellStyle = dataGridViewCellStyle4;
             this.colDate.HeaderText = "Дата";
             this.colDate.MinimumWidth = 70;
@@ -677,7 +684,7 @@
             // 
             // panelTableHeader
             // 
-            this.panelTableHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            this.panelTableHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(234)))), ((int)(((byte)(240)))));
             this.panelTableHeader.Controls.Add(this.lblColDate);
             this.panelTableHeader.Controls.Add(this.lblColDesc);
             this.panelTableHeader.Controls.Add(this.lblColId);
@@ -689,8 +696,8 @@
             // 
             // lblColDate
             // 
-            this.lblColDate.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblColDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.lblColDate.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblColDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblColDate.Location = new System.Drawing.Point(742, 6);
             this.lblColDate.Name = "lblColDate";
             this.lblColDate.Size = new System.Drawing.Size(80, 18);
@@ -699,8 +706,8 @@
             // 
             // lblColDesc
             // 
-            this.lblColDesc.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblColDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.lblColDesc.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblColDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblColDesc.Location = new System.Drawing.Point(155, 6);
             this.lblColDesc.Name = "lblColDesc";
             this.lblColDesc.Size = new System.Drawing.Size(580, 18);
@@ -709,8 +716,8 @@
             // 
             // lblColId
             // 
-            this.lblColId.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblColId.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.lblColId.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblColId.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblColId.Location = new System.Drawing.Point(8, 6);
             this.lblColId.Name = "lblColId";
             this.lblColId.Size = new System.Drawing.Size(140, 18);
@@ -719,7 +726,7 @@
             // 
             // panelTopBar
             // 
-            this.panelTopBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.panelTopBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.panelTopBar.Controls.Add(this.cmbSort);
             this.panelTopBar.Controls.Add(this.lblPageInfo);
             this.panelTopBar.Controls.Add(this.cmbPageSize);
@@ -736,7 +743,7 @@
             this.cmbSort.BackColor = System.Drawing.Color.White;
             this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbSort.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbSort.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbSort.ForeColor = System.Drawing.Color.Black;
             this.cmbSort.Location = new System.Drawing.Point(1038, 9);
             this.cmbSort.Name = "cmbSort";
@@ -746,8 +753,8 @@
             // 
             // lblPageInfo
             // 
-            this.lblPageInfo.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblPageInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
+            this.lblPageInfo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblPageInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblPageInfo.Location = new System.Drawing.Point(195, 11);
             this.lblPageInfo.Name = "lblPageInfo";
             this.lblPageInfo.Size = new System.Drawing.Size(380, 18);
@@ -759,7 +766,7 @@
             this.cmbPageSize.BackColor = System.Drawing.Color.White;
             this.cmbPageSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPageSize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbPageSize.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cmbPageSize.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cmbPageSize.ForeColor = System.Drawing.Color.Black;
             this.cmbPageSize.Items.AddRange(new object[] {
             "10",
@@ -774,8 +781,8 @@
             // lblPageSizeLabel
             // 
             this.lblPageSizeLabel.AutoSize = true;
-            this.lblPageSizeLabel.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblPageSizeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
+            this.lblPageSizeLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblPageSizeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
             this.lblPageSizeLabel.Location = new System.Drawing.Point(8, 12);
             this.lblPageSizeLabel.Name = "lblPageSizeLabel";
             this.lblPageSizeLabel.Size = new System.Drawing.Size(80, 15);
@@ -784,7 +791,7 @@
             // 
             // panelBottomBar
             // 
-            this.panelBottomBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.panelBottomBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.panelBottomBar.Controls.Add(this.btnUpdateFromBdu);
             this.panelBottomBar.Controls.Add(this.btnPrevPage);
             this.panelBottomBar.Controls.Add(this.btnNextPage);
@@ -796,7 +803,7 @@
             // 
             // btnUpdateFromBdu
             // 
-            this.btnUpdateFromBdu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(55)))));
+            this.btnUpdateFromBdu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             this.btnUpdateFromBdu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnUpdateFromBdu.FlatAppearance.BorderSize = 0;
             this.btnUpdateFromBdu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -814,7 +821,7 @@
             // 
             this.btnPrevPage.BackColor = System.Drawing.Color.White;
             this.btnPrevPage.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnPrevPage.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btnPrevPage.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(212)))), ((int)(((byte)(222)))));
             this.btnPrevPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrevPage.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnPrevPage.ForeColor = System.Drawing.Color.Black;
@@ -830,7 +837,7 @@
             // 
             this.btnNextPage.BackColor = System.Drawing.Color.White;
             this.btnNextPage.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnNextPage.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btnNextPage.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(212)))), ((int)(((byte)(222)))));
             this.btnNextPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNextPage.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnNextPage.ForeColor = System.Drawing.Color.Black;
@@ -844,7 +851,7 @@
             // 
             // panelRight
             // 
-            this.panelRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.panelRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.panelRight.Controls.Add(this.lstRecentVulns);
             this.panelRight.Controls.Add(this.lblLastChanges);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
@@ -855,12 +862,12 @@
             // 
             // lstRecentVulns
             // 
-            this.lstRecentVulns.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.lstRecentVulns.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.lstRecentVulns.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstRecentVulns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstRecentVulns.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.lstRecentVulns.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lstRecentVulns.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.lstRecentVulns.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lstRecentVulns.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
             this.lstRecentVulns.FormattingEnabled = true;
             this.lstRecentVulns.ItemHeight = 44;
             this.lstRecentVulns.Location = new System.Drawing.Point(0, 30);
@@ -870,10 +877,10 @@
             // 
             // lblLastChanges
             // 
-            this.lblLastChanges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblLastChanges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblLastChanges.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblLastChanges.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblLastChanges.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(180)))), ((int)(((byte)(100)))));
+            this.lblLastChanges.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblLastChanges.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             this.lblLastChanges.Location = new System.Drawing.Point(0, 0);
             this.lblLastChanges.Name = "lblLastChanges";
             this.lblLastChanges.Size = new System.Drawing.Size(270, 30);
@@ -881,20 +888,69 @@
             this.lblLastChanges.Text = "ПОСЛЕДНИЕ ИЗМЕНЕНИЯ";
             this.lblLastChanges.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tabsRoot
+            // 
+            this.tabsRoot.Controls.Add(this.tabVulns);
+            this.tabsRoot.Controls.Add(this.tabStats);
+            this.tabsRoot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabsRoot.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tabsRoot.Location = new System.Drawing.Point(0, 0);
+            this.tabsRoot.Name = "tabsRoot";
+            this.tabsRoot.Padding = new System.Drawing.Point(10, 4);
+            this.tabsRoot.SelectedIndex = 0;
+            this.tabsRoot.Size = new System.Drawing.Size(1902, 991);
+            this.tabsRoot.TabIndex = 0;
+            // 
+            // tabVulns
+            // 
+            this.tabVulns.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tabVulns.Controls.Add(this.panelCenter);
+            this.tabVulns.Controls.Add(this.panelRight);
+            this.tabVulns.Controls.Add(this.panelFilters);
+            this.tabVulns.Location = new System.Drawing.Point(4, 28);
+            this.tabVulns.Name = "tabVulns";
+            this.tabVulns.Padding = new System.Windows.Forms.Padding(0);
+            this.tabVulns.Size = new System.Drawing.Size(1894, 959);
+            this.tabVulns.TabIndex = 0;
+            this.tabVulns.Text = "Уязвимости";
+            // 
+            // tabStats
+            // 
+            this.tabStats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tabStats.Controls.Add(this.stats3d);
+            this.tabStats.Location = new System.Drawing.Point(4, 28);
+            this.tabStats.Name = "tabStats";
+            this.tabStats.Padding = new System.Windows.Forms.Padding(0);
+            this.tabStats.Size = new System.Drawing.Size(1894, 959);
+            this.tabStats.TabIndex = 1;
+            this.tabStats.Text = "Статистика (3D)";
+            // 
+            // stats3d
+            // 
+            this.stats3d.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.stats3d.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stats3d.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.stats3d.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.stats3d.Location = new System.Drawing.Point(0, 0);
+            this.stats3d.Name = "stats3d";
+            this.stats3d.Size = new System.Drawing.Size(1894, 959);
+            this.stats3d.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(1902, 991);
-            this.Controls.Add(this.panelCenter);
-            this.Controls.Add(this.panelRight);
-            this.Controls.Add(this.panelFilters);
+            this.Controls.Add(this.tabsRoot);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.MinimumSize = new System.Drawing.Size(1918, 1030);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Справочник уязвимостей";
+            this.tabsRoot.ResumeLayout(false);
+            this.tabVulns.ResumeLayout(false);
+            this.tabStats.ResumeLayout(false);
             this.panelFilters.ResumeLayout(false);
             this.panelFilters.PerformLayout();
             this.panelCenter.ResumeLayout(false);
@@ -971,5 +1027,9 @@
         private System.Windows.Forms.Button btnApplyFilter;
         private System.Windows.Forms.Panel panelBottomBar;
         private System.Windows.Forms.CheckBox chkUseDate;
+        private System.Windows.Forms.TabControl tabsRoot;
+        private System.Windows.Forms.TabPage tabVulns;
+        private System.Windows.Forms.TabPage tabStats;
+        private Vullnerability.Forms.Stats3dControl stats3d;
     }
 }
