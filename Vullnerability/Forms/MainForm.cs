@@ -48,6 +48,12 @@ namespace Vullnerability.Forms
             if (!string.IsNullOrEmpty(loggedInUserName))
                 this.Text = $"Справочник уязвимостей — {loggedInUserName}";
 
+            // Stats3dControl — кастомный GDI+ контрол без своего Designer-файла,
+            // его нельзя инстанцировать в MainForm.Designer.cs (VS ругается
+            // «Не удалось найти тип»). Добавляем программно в уже созданную
+            // в дизайнере вкладку tabStats.
+            tabStats.Controls.Add(new Stats3dControl { Dock = DockStyle.Fill });
+
             LoadDictionaries();
             SetupSortCombo();
             SetupPageSizeCombo();
