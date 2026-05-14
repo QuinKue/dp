@@ -60,6 +60,49 @@ namespace Vullnerability.Data
             return _resolvedDbPath;
         }
 
+        // Подменяет рабочий .sqlite файлом, выбранным пользователем.
+        // Перед вызовом ВСЕ открытые DbContext должны быть disposed — иначе
+        // ClearAllPools не сможет освободить файл и File.Copy упадёт с IOException.
+        // Возвращает полный путь к актуальной БД (тот же GetDbPath()).
+        public static string LoadDatabaseFromFile(string sourcePath)
+        {
+            if (string.IsNullOrEmpty(sourcePath))
+                throw new ArgumentException("Не указан путь к файлу БД.", nameof(sourcePath));
+            if (!File.Exists(sourcePath))
+                throw new FileNotFoundException("Файл базы данных не найден.", sourcePath);
+
+            string targetPath = GetDbPath();
+
+            // Если выбрали тот же самый файл — ничего не делаем.
+            if (string.Equals(Path.GetFullPath(sourcePath), Path.GetFullPath(targetPath),
+                                StringComparison.OrdinalIgnoreCase))
+                return targetPath;
+
+            // Отвязываем SQLite от файла. Без этого File.Copy упадёт «файл используется».
+            SQLiteConnection.ClearAllPools();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            // Бэкап текущего файла на случай, если новый окажется битым.
+            if (File.Exists(targetPath))
+            {
+                string backup = targetPath + ".bak";
+                try
+                {
+                    if (File.Exists(backup)) File.Delete(backup);
+                    File.Copy(targetPath, backup, true);
+                }
+                catch { /* бэкап лучше пропустить, чем падать всему импорту */ }
+            }
+
+            File.Copy(sourcePath, targetPath, true);
+
+            // Подняли подключение, прогнали PRAGMA, заодно проверили что файл открывается.
+            // Если файл невалидный, EnsureUsersTable бросит исключение — поймаем выше.
+            EnsureUsersTable(targetPath);
+            return targetPath;
+        }
+
         // Перебираем кандидаты, пока не найдём первый writable каталог.
         // На колледжных машинах %LOCALAPPDATA% может быть на сетевом профиле
         // или закрыт политикой ⇒ падает CreateFile / WAL.

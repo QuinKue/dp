@@ -19,7 +19,9 @@ namespace Vullnerability.Forms
 {
     public partial class MainForm : Form
     {
-        private readonly VulnDbContext db = new VulnDbContext();
+        // db не readonly: при «Загрузить БД из файла» (вкладка «Статистика») контекст
+        // пересоздаётся, чтобы EF подцепил новый файл vulndb.sqlite.
+        private VulnDbContext db = new VulnDbContext();
         private int _pageSize = 100;
         private int _pageIndex = 0;
         private SortField _sortField = SortField.BduId;
@@ -52,7 +54,9 @@ namespace Vullnerability.Forms
             // его нельзя инстанцировать в MainForm.Designer.cs (VS ругается
             // «Не удалось найти тип»). Добавляем программно в уже созданную
             // в дизайнере вкладку tabStats.
-            tabStats.Controls.Add(new Stats3dControl { Dock = DockStyle.Fill });
+            var stats3d = new Stats3dControl { Dock = DockStyle.Fill };
+            stats3d.LoadDatabaseRequested += OnLoadDatabaseRequested;
+            tabStats.Controls.Add(stats3d);
 
             LoadDictionaries();
             SetupSortCombo();
@@ -844,9 +848,52 @@ namespace Vullnerability.Forms
             }
         }
 
+        // Хендлер «Загрузить БД из файла» с вкладки «Статистика».
+        // 1) dispose'аем текущий DbContext, чтобы освободить файл,
+        // 2) SqliteBootstrap.LoadDatabaseFromFile перезаписывает рабочий .sqlite,
+        // 3) пересоздаём контекст и перегружаем фильтры/таблицу/recent.
+        private async void OnLoadDatabaseRequested(string sourcePath)
+        {
+            this.UseWaitCursor = true;
+            SetFilterUiEnabled(false);
+
+            try
+            {
+                if (db != null) { db.Dispose(); db = null; }
+
+                string actual = await Task.Run(() => SqliteBootstrap.LoadDatabaseFromFile(sourcePath));
+
+                db = new VulnDbContext();
+                await LoadDictionariesAsync();
+                await LoadRecentVulnsAsync();
+                _pageIndex = 0;
+                RefreshCurrentPage();
+
+                MessageBox.Show(
+                    "База данных загружена:\n" + actual,
+                    "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                // на случай если контекст уже null/disposed — восстановим, чтобы UI не умер
+                if (db == null)
+                {
+                    try { db = new VulnDbContext(); } catch { /* ignore */ }
+                }
+                MessageBox.Show(
+                    "Не удалось загрузить БД:\n" + ex.Message,
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.UseWaitCursor = false;
+                SetFilterUiEnabled(true);
+            }
+        }
+
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            db.Dispose();
+            if (db != null) db.Dispose();
             base.OnFormClosed(e);
         }
     }
