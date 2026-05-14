@@ -80,21 +80,21 @@ namespace Vullnerability.Forms
 
             _btnRefresh = new Button
             {
-                Text = "Обновить",
+                Text = "Загрузить БД из файла",
                 Location = new Point(330, 8),
-                Size = new Size(110, 28),
+                Size = new Size(190, 28),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = UiTheme.SecondaryButton,
                 ForeColor = UiTheme.SecondaryButtonText,
                 UseVisualStyleBackColor = false,
             };
             _btnRefresh.FlatAppearance.BorderColor = UiTheme.Border;
-            _btnRefresh.Click += (s, e) => ReloadAsync();
+            _btnRefresh.Click += BtnRefresh_Click;
 
             _lblTotal = new Label
             {
                 AutoSize = false,
-                Location = new Point(460, 12),
+                Location = new Point(540, 12),
                 Size = new Size(400, 20),
                 BackColor = Color.Transparent,
                 ForeColor = UiTheme.TextMuted,
@@ -114,6 +114,45 @@ namespace Vullnerability.Forms
 
             this.Controls.Add(_chart);
             this.Controls.Add(_toolbar);
+        }
+
+        // MainForm подписывается, чтобы dispose'нуть свой DbContext, выполнить swap файла
+        // через SqliteBootstrap, пересоздать DbContext и перегрузить таблицу/фильтры/recent.
+        // После хендлера контрол сам вызывает ReloadAsync() для своего графика.
+        public event Action<string> LoadDatabaseRequested;
+
+        private void BtnRefresh_Click(object sender, EventArgs e)
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.Title = "Выберите файл базы данных (SQLite)";
+                ofd.Filter = "SQLite БД (*.sqlite;*.db;*.sqlite3)|*.sqlite;*.db;*.sqlite3|" +
+                             "Все файлы (*.*)|*.*";
+                ofd.CheckFileExists = true;
+                if (ofd.ShowDialog(this) != DialogResult.OK) return;
+
+                try
+                {
+                    _btnRefresh.Enabled = false;
+                    _cmbSlice.Enabled = false;
+                    _lblTotal.Text = "Загрузка БД...";
+
+                    LoadDatabaseRequested?.Invoke(ofd.FileName);
+                    ReloadAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "Не удалось загрузить БД из файла:\n" + ex.Message,
+                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _lblTotal.Text = "Ошибка загрузки БД";
+                }
+                finally
+                {
+                    _btnRefresh.Enabled = true;
+                    _cmbSlice.Enabled = true;
+                }
+            }
         }
 
         protected override void OnHandleCreated(EventArgs e)
