@@ -1,0 +1,17 @@
+# Build artifacts — должны пересобираться локально, не коммитятся.
+# Когда я (Devin) собирал проект под mono/xbuild на Linux, в репу попадали
+# артефакты с MDB-символами и другими отличиями от msbuild — это сбивает
+# VS Designer на Windows (ошибки про System.Void / "не удалось загрузить
+# базовый класс System.Windows.Forms.Form").
+bin/
+obj/
+
+# VS user-specific
+*.user
+*.suo
+.vs/
+
+# Локальная база, если случайно положили рядом с проектом
+*.sqlite
+*.sqlite-journal
+*.db
