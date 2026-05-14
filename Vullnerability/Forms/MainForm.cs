@@ -36,6 +36,14 @@ namespace Vullnerability.Forms
         {
             InitializeComponent();
 
+            // Анти-мерцание: даём окну композитную отрисовку (WS_EX_COMPOSITED),
+            // плюс DoubleBuffered на саму форму и на ключевые контейнеры через
+            // рефлексию (свойство protected у Panel/TabPage). Иначе во время
+            // тяжёлого импорта из БДУ блок фильтров перекрашивается порциями
+            // и поля «дёргаются».
+            this.DoubleBuffered = true;
+            EnableDoubleBufferedRecursive(this);
+
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
                                                   SecurityProtocolType.Tls11 |
                                                   SecurityProtocolType.Tls;
@@ -61,6 +69,35 @@ namespace Vullnerability.Forms
             InitRecentList();
             LoadRecentVulns();
             WireSearchEnter();
+        }
+
+        // WS_EX_COMPOSITED — отрисовка детей формы «снизу вверх» одним кадром,
+        // спасает от частичных перерисовок при тяжёлой нагрузке (импорт из БДУ
+        // даёт сильный GC, и стандартная WinForms-инвалидация мигает).
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000; // WS_EX_COMPOSITED
+                return cp;
+            }
+        }
+
+        // Panel.DoubleBuffered — protected. Рекурсивно проставляем у всех
+        // контейнеров формы через рефлексию.
+        private static void EnableDoubleBufferedRecursive(Control root)
+        {
+            var prop = typeof(Control).GetProperty(
+                "DoubleBuffered",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            foreach (Control c in root.Controls)
+            {
+                if (c is Panel || c is TabControl || c is TabPage || c is GroupBox)
+                    prop.SetValue(c, true, null);
+                if (c.HasChildren)
+                    EnableDoubleBufferedRecursive(c);
+            }
         }
 
         // чтобы Enter в поле поиска сразу применял фильтр
