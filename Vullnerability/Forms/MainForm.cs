@@ -27,8 +27,10 @@ namespace Vullnerability.Forms
         private SortField _sortField = SortField.BduId;
         private bool _sortDescending = true;
         private List<Vulnerability> _recentVulns = new List<Vulnerability>();
+        private Stats3dControl _statsChart;
 
         private enum SortField { BduId, DiscoveryDate, Severity }
+        private enum StatsSlice { Severity = 0, Year = 1, Status = 2 }
 
         private const string ExcelUrl = "https://bdu.fstec.ru/files/documents/vullist.xlsx";
 
@@ -50,13 +52,12 @@ namespace Vullnerability.Forms
             if (!string.IsNullOrEmpty(loggedInUserName))
                 this.Text = $"Справочник уязвимостей — {loggedInUserName}";
 
-            // Stats3dControl — кастомный GDI+ контрол без своего Designer-файла,
-            // его нельзя инстанцировать в MainForm.Designer.cs (VS ругается
-            // «Не удалось найти тип»). Добавляем программно в уже созданную
-            // в дизайнере вкладку tabStats.
-            var stats3d = new Stats3dControl { Dock = DockStyle.Fill };
-            stats3d.LoadDatabaseRequested += OnLoadDatabaseRequested;
-            tabStats.Controls.Add(stats3d);
+            // Сам GDI+ канвас всё ещё создаётся в коде (VS Designer не умеет
+            // его рендерить), но тулбар вкладки (срез/кнопка/счётчик) живёт
+            // целиком в MainForm.Designer.cs — поэтому в дизайнере видно UI.
+            _statsChart = new Stats3dControl { Dock = DockStyle.Fill };
+            panelStatsChart.Controls.Add(_statsChart);
+            if (cmbStatsSlice.Items.Count > 0) cmbStatsSlice.SelectedIndex = 0;
 
             LoadDictionaries();
             SetupSortCombo();
@@ -848,14 +849,37 @@ namespace Vullnerability.Forms
             }
         }
 
-        // Хендлер «Загрузить БД из файла» с вкладки «Статистика».
-        // 1) dispose'аем текущий DbContext, чтобы освободить файл,
-        // 2) SqliteBootstrap.LoadDatabaseFromFile перезаписывает рабочий .sqlite,
-        // 3) пересоздаём контекст и перегружаем фильтры/таблицу/recent.
-        private async void OnLoadDatabaseRequested(string sourcePath)
+        // --- Вкладка «Статистика (3D)» ---
+
+        // Смена среза в комбобоксе — перегружаем агрегат и канвас.
+        private void cmbStatsSlice_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ReloadStatsAsync();
+        }
+
+        // Кнопка «Загрузить БД из файла» с тулбара вкладки «Статистика».
+        // 1) OpenFileDialog,
+        // 2) dispose текущего DbContext,
+        // 3) SqliteBootstrap.LoadDatabaseFromFile перезаписывает рабочий .sqlite,
+        // 4) пересоздаём контекст и перегружаем фильтры/таблицу/recent + график.
+        private async void btnStatsLoadDb_Click(object sender, EventArgs e)
+        {
+            string sourcePath;
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.Title = "Выберите файл базы данных (SQLite)";
+                ofd.Filter = "SQLite БД (*.sqlite;*.db;*.sqlite3)|*.sqlite;*.db;*.sqlite3|" +
+                             "Все файлы (*.*)|*.*";
+                ofd.CheckFileExists = true;
+                if (ofd.ShowDialog(this) != DialogResult.OK) return;
+                sourcePath = ofd.FileName;
+            }
+
             this.UseWaitCursor = true;
             SetFilterUiEnabled(false);
+            btnStatsLoadDb.Enabled = false;
+            cmbStatsSlice.Enabled = false;
+            lblStatsTotal.Text = "Загрузка БД...";
 
             try
             {
@@ -868,6 +892,7 @@ namespace Vullnerability.Forms
                 await LoadRecentVulnsAsync();
                 _pageIndex = 0;
                 RefreshCurrentPage();
+                ReloadStatsAsync();
 
                 MessageBox.Show(
                     "База данных загружена:\n" + actual,
@@ -875,11 +900,11 @@ namespace Vullnerability.Forms
             }
             catch (Exception ex)
             {
-                // на случай если контекст уже null/disposed — восстановим, чтобы UI не умер
                 if (db == null)
                 {
                     try { db = new VulnDbContext(); } catch { /* ignore */ }
                 }
+                lblStatsTotal.Text = "Ошибка загрузки БД";
                 MessageBox.Show(
                     "Не удалось загрузить БД:\n" + ex.Message,
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -888,7 +913,139 @@ namespace Vullnerability.Forms
             {
                 this.UseWaitCursor = false;
                 SetFilterUiEnabled(true);
+                btnStatsLoadDb.Enabled = true;
+                cmbStatsSlice.Enabled = true;
             }
+        }
+
+        private async void ReloadStatsAsync()
+        {
+            if (_statsChart == null) return;
+
+            try
+            {
+                btnStatsLoadDb.Enabled = false;
+                cmbStatsSlice.Enabled = false;
+                lblStatsTotal.Text = "Загрузка...";
+
+                StatsSlice slice = (StatsSlice)Math.Max(0, cmbStatsSlice.SelectedIndex);
+                var data = await Task.Run(() => LoadStatsSlice(slice));
+
+                _statsChart.SetData(data.Bars);
+                lblStatsTotal.Text = $"Всего уязвимостей: {data.Total:N0}".Replace(',', ' ');
+            }
+            catch (Exception ex)
+            {
+                lblStatsTotal.Text = "Ошибка: " + ex.Message;
+            }
+            finally
+            {
+                btnStatsLoadDb.Enabled = true;
+                cmbStatsSlice.Enabled = true;
+            }
+        }
+
+        private struct StatsSliceData
+        {
+            public Stats3dControl.Bar[] Bars;
+            public int Total;
+        }
+
+        // Выборка в фоне через отдельный DbContext — главный db мы не блокируем.
+        private static StatsSliceData LoadStatsSlice(StatsSlice slice)
+        {
+            using (var ctx = new VulnDbContext())
+            {
+                int total = ctx.Vulnerabilities.AsNoTracking().Count();
+                Stats3dControl.Bar[] bars;
+                switch (slice)
+                {
+                    case StatsSlice.Severity:
+                        bars = LoadBySeverity(ctx);
+                        break;
+                    case StatsSlice.Year:
+                        bars = LoadByYear(ctx);
+                        break;
+                    case StatsSlice.Status:
+                    default:
+                        bars = LoadByStatus(ctx);
+                        break;
+                }
+                return new StatsSliceData { Bars = bars, Total = total };
+            }
+        }
+
+        private static Stats3dControl.Bar[] LoadBySeverity(VulnDbContext ctx)
+        {
+            var raw = ctx.Vulnerabilities.AsNoTracking()
+                .GroupBy(v => v.SeverityLevel != null ? v.SeverityLevel.Name : null)
+                .Select(g => new { Name = g.Key, Count = g.Count() })
+                .ToList();
+
+            string[] order = { "Критический", "Высокий", "Средний", "Низкий" };
+            var ordered = order
+                .Select(name => new Stats3dControl.Bar
+                {
+                    Label = name,
+                    Count = raw.FirstOrDefault(r => string.Equals(r.Name, name, StringComparison.OrdinalIgnoreCase))?.Count ?? 0,
+                    Color = UiTheme.SeverityColor(name),
+                })
+                .ToList();
+
+            int other = raw
+                .Where(r => !order.Any(o => string.Equals(o, r.Name, StringComparison.OrdinalIgnoreCase)))
+                .Sum(r => r.Count);
+            if (other > 0)
+                ordered.Add(new Stats3dControl.Bar { Label = "Не указан", Count = other, Color = UiTheme.SeverityUnknown });
+
+            return ordered.Where(b => b.Count > 0).ToArray();
+        }
+
+        private static Stats3dControl.Bar[] LoadByYear(VulnDbContext ctx)
+        {
+            var raw = ctx.Vulnerabilities.AsNoTracking()
+                .Where(v => v.PublicationDate != null)
+                .Select(v => v.PublicationDate.Value.Year)
+                .GroupBy(y => y)
+                .Select(g => new { Year = g.Key, Count = g.Count() })
+                .OrderBy(x => x.Year)
+                .ToList();
+
+            return raw
+                .Select(x => new Stats3dControl.Bar
+                {
+                    Label = x.Year.ToString(),
+                    Count = x.Count,
+                    Color = UiTheme.Accent,
+                })
+                .ToArray();
+        }
+
+        private static Stats3dControl.Bar[] LoadByStatus(VulnDbContext ctx)
+        {
+            var raw = ctx.Vulnerabilities.AsNoTracking()
+                .GroupBy(v => v.Status != null ? v.Status.Name : null)
+                .Select(g => new { Name = g.Key, Count = g.Count() })
+                .ToList();
+
+            System.Drawing.Color[] palette =
+            {
+                System.Drawing.Color.FromArgb(50, 132, 200),
+                System.Drawing.Color.FromArgb(170, 110, 200),
+                System.Drawing.Color.FromArgb(230, 150, 70),
+                System.Drawing.Color.FromArgb(80, 170, 130),
+            };
+
+            int i = 0;
+            return raw
+                .OrderByDescending(r => r.Count)
+                .Select(r => new Stats3dControl.Bar
+                {
+                    Label = r.Name ?? "Не указан",
+                    Count = r.Count,
+                    Color = palette[i++ % palette.Length],
+                })
+                .ToArray();
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

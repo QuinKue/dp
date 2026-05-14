@@ -83,9 +83,16 @@
             this.tabsRoot = new System.Windows.Forms.TabControl();
             this.tabVulns = new System.Windows.Forms.TabPage();
             this.tabStats = new System.Windows.Forms.TabPage();
+            this.panelStatsToolbar = new System.Windows.Forms.Panel();
+            this.lblStatsSlice = new System.Windows.Forms.Label();
+            this.cmbStatsSlice = new System.Windows.Forms.ComboBox();
+            this.btnStatsLoadDb = new System.Windows.Forms.Button();
+            this.lblStatsTotal = new System.Windows.Forms.Label();
+            this.panelStatsChart = new System.Windows.Forms.Panel();
             this.tabsRoot.SuspendLayout();
             this.tabVulns.SuspendLayout();
             this.tabStats.SuspendLayout();
+            this.panelStatsToolbar.SuspendLayout();
             this.panelFilters.SuspendLayout();
             this.panelCenter.SuspendLayout();
             this.panelVullsWrap.SuspendLayout();
@@ -916,12 +923,94 @@
             // tabStats
             // 
             this.tabStats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tabStats.Controls.Add(this.panelStatsChart);
+            this.tabStats.Controls.Add(this.panelStatsToolbar);
             this.tabStats.Location = new System.Drawing.Point(4, 28);
             this.tabStats.Name = "tabStats";
             this.tabStats.Padding = new System.Windows.Forms.Padding(0);
             this.tabStats.Size = new System.Drawing.Size(1894, 959);
             this.tabStats.TabIndex = 1;
             this.tabStats.Text = "Статистика (3D)";
+            // 
+            // panelStatsToolbar
+            // 
+            this.panelStatsToolbar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(234)))), ((int)(((byte)(240)))));
+            this.panelStatsToolbar.Controls.Add(this.lblStatsTotal);
+            this.panelStatsToolbar.Controls.Add(this.btnStatsLoadDb);
+            this.panelStatsToolbar.Controls.Add(this.cmbStatsSlice);
+            this.panelStatsToolbar.Controls.Add(this.lblStatsSlice);
+            this.panelStatsToolbar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelStatsToolbar.Location = new System.Drawing.Point(0, 0);
+            this.panelStatsToolbar.Name = "panelStatsToolbar";
+            this.panelStatsToolbar.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.panelStatsToolbar.Size = new System.Drawing.Size(1894, 44);
+            this.panelStatsToolbar.TabIndex = 0;
+            // 
+            // lblStatsSlice
+            // 
+            this.lblStatsSlice.AutoSize = false;
+            this.lblStatsSlice.BackColor = System.Drawing.Color.Transparent;
+            this.lblStatsSlice.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblStatsSlice.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.lblStatsSlice.Location = new System.Drawing.Point(10, 12);
+            this.lblStatsSlice.Name = "lblStatsSlice";
+            this.lblStatsSlice.Size = new System.Drawing.Size(48, 22);
+            this.lblStatsSlice.TabIndex = 0;
+            this.lblStatsSlice.Text = "Срез:";
+            this.lblStatsSlice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cmbStatsSlice
+            // 
+            this.cmbStatsSlice.BackColor = System.Drawing.Color.White;
+            this.cmbStatsSlice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbStatsSlice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbStatsSlice.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbStatsSlice.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.cmbStatsSlice.Items.AddRange(new object[] {
+            "По уровню опасности",
+            "По году публикации",
+            "По статусу"});
+            this.cmbStatsSlice.Location = new System.Drawing.Point(58, 9);
+            this.cmbStatsSlice.Name = "cmbStatsSlice";
+            this.cmbStatsSlice.Size = new System.Drawing.Size(260, 26);
+            this.cmbStatsSlice.TabIndex = 1;
+            this.cmbStatsSlice.SelectedIndexChanged += new System.EventHandler(this.cmbStatsSlice_SelectedIndexChanged);
+            // 
+            // btnStatsLoadDb
+            // 
+            this.btnStatsLoadDb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(236)))), ((int)(((byte)(242)))));
+            this.btnStatsLoadDb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStatsLoadDb.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnStatsLoadDb.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(55)))), ((int)(((byte)(65)))));
+            this.btnStatsLoadDb.Location = new System.Drawing.Point(330, 8);
+            this.btnStatsLoadDb.Name = "btnStatsLoadDb";
+            this.btnStatsLoadDb.Size = new System.Drawing.Size(210, 28);
+            this.btnStatsLoadDb.TabIndex = 2;
+            this.btnStatsLoadDb.Text = "Загрузить БД из файла";
+            this.btnStatsLoadDb.UseVisualStyleBackColor = false;
+            this.btnStatsLoadDb.Click += new System.EventHandler(this.btnStatsLoadDb_Click);
+            // 
+            // lblStatsTotal
+            // 
+            this.lblStatsTotal.AutoSize = false;
+            this.lblStatsTotal.BackColor = System.Drawing.Color.Transparent;
+            this.lblStatsTotal.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblStatsTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(105)))), ((int)(((byte)(117)))));
+            this.lblStatsTotal.Location = new System.Drawing.Point(560, 12);
+            this.lblStatsTotal.Name = "lblStatsTotal";
+            this.lblStatsTotal.Size = new System.Drawing.Size(400, 22);
+            this.lblStatsTotal.TabIndex = 3;
+            this.lblStatsTotal.Text = "Всего уязвимостей: —";
+            this.lblStatsTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panelStatsChart
+            // 
+            this.panelStatsChart.BackColor = System.Drawing.Color.White;
+            this.panelStatsChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelStatsChart.Location = new System.Drawing.Point(0, 44);
+            this.panelStatsChart.Name = "panelStatsChart";
+            this.panelStatsChart.Size = new System.Drawing.Size(1894, 915);
+            this.panelStatsChart.TabIndex = 1;
 
             // 
             // MainForm
@@ -939,6 +1028,7 @@
             this.tabsRoot.ResumeLayout(false);
             this.tabVulns.ResumeLayout(false);
             this.tabStats.ResumeLayout(false);
+            this.panelStatsToolbar.ResumeLayout(false);
             this.panelFilters.ResumeLayout(false);
             this.panelFilters.PerformLayout();
             this.panelCenter.ResumeLayout(false);
@@ -1018,5 +1108,11 @@
         private System.Windows.Forms.TabControl tabsRoot;
         private System.Windows.Forms.TabPage tabVulns;
         private System.Windows.Forms.TabPage tabStats;
+        private System.Windows.Forms.Panel panelStatsToolbar;
+        private System.Windows.Forms.Label lblStatsSlice;
+        private System.Windows.Forms.ComboBox cmbStatsSlice;
+        private System.Windows.Forms.Button btnStatsLoadDb;
+        private System.Windows.Forms.Label lblStatsTotal;
+        private System.Windows.Forms.Panel panelStatsChart;
     }
 }
