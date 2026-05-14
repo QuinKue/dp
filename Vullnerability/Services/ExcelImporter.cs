@@ -225,6 +225,7 @@ namespace Vullnerability.Services
             using (var conn = new SQLiteConnection(_connStr))
             {
                 conn.Open();
+                ApplyImportPragmas(conn);
                 using (var tx = conn.BeginTransaction())
                 {
                     try
@@ -232,17 +233,7 @@ namespace Vullnerability.Services
                         if (dtVulnProds.Rows.Count > 0)
                             DoBulkCopy(conn, tx, "vulnerability_products", dtVulnProds);
 
-                        foreach (var rel in newProductTypeRels)
-                        {
-                            using (var cmd = new SQLiteCommand(
-                                "INSERT OR IGNORE INTO product_product_types(product_id, product_type_id) VALUES(@p, @t);",
-                                conn, tx))
-                            {
-                                cmd.Parameters.AddWithValue("@p", rel.productId);
-                                cmd.Parameters.AddWithValue("@t", rel.typeId);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
+                        InsertProductTypeRels(conn, tx, newProductTypeRels);
                         tx.Commit();
                     }
                     catch
@@ -487,6 +478,7 @@ namespace Vullnerability.Services
             using (var conn = new SQLiteConnection(_connStr))
             {
                 conn.Open();
+                ApplyImportPragmas(conn);
                 using (var tx = conn.BeginTransaction())
                 {
                     try
@@ -530,20 +522,7 @@ namespace Vullnerability.Services
 
                         // 5) связь product ↔ product_type — INSERT OR IGNORE, чтобы существующие пары не дублировать
                         // PK = (product_id, product_type_id), дубли игнорируем через INSERT OR IGNORE
-                        if (newProductTypeRels.Count > 0)
-                        {
-                            foreach (var rel in newProductTypeRels)
-                            {
-                                using (var cmd = new SQLiteCommand(
-                                    "INSERT OR IGNORE INTO product_product_types(product_id, product_type_id) VALUES(@p, @t);",
-                                    conn, tx))
-                                {
-                                    cmd.Parameters.AddWithValue("@p", rel.productId);
-                                    cmd.Parameters.AddWithValue("@t", rel.typeId);
-                                    cmd.ExecuteNonQuery();
-                                }
-                            }
-                        }
+                        InsertProductTypeRels(conn, tx, newProductTypeRels);
 
                         tx.Commit();
                     }
@@ -568,6 +547,43 @@ namespace Vullnerability.Services
                 if (orderIndex >= 0 && orderIndex < bduOrder.Count
                     && idMap.TryGetValue(bduOrder[orderIndex], out int realId))
                     r[idx] = realId;
+            }
+        }
+
+        // PRAGMA на время импорта: всё в память, fsync реже — риск низкий, вся работа в одной
+        // транзакции и своя копия соединения. Съекономленные правила живут только в этом
+        // коннекшене (EF6 свои открывает с connection-string'ом с Journal Mode=Truncate).
+        private static void ApplyImportPragmas(SQLiteConnection conn)
+        {
+            using (var cmd = new SQLiteCommand(
+                "PRAGMA foreign_keys=ON; " +
+                "PRAGMA synchronous=NORMAL; " +
+                "PRAGMA journal_mode=MEMORY; " +
+                "PRAGMA temp_store=MEMORY; " +
+                "PRAGMA cache_size=-65536;", conn))
+            {
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // Один prepared INSERT OR IGNORE вместо new SQLiteCommand() на каждую пару.
+        private static void InsertProductTypeRels(
+            SQLiteConnection conn, SQLiteTransaction tx,
+            List<(int productId, int typeId)> rels)
+        {
+            if (rels == null || rels.Count == 0) return;
+            using (var cmd = new SQLiteCommand(
+                "INSERT OR IGNORE INTO product_product_types(product_id, product_type_id) VALUES(@p, @t);",
+                conn, tx))
+            {
+                var pP = cmd.Parameters.Add("@p", DbType.Int32);
+                var pT = cmd.Parameters.Add("@t", DbType.Int32);
+                foreach (var rel in rels)
+                {
+                    pP.Value = rel.productId;
+                    pT.Value = rel.typeId;
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -981,6 +997,37 @@ namespace Vullnerability.Services
         // ---- Поиск ячеек Excel по имени колонки ----
         private readonly Dictionary<string, int[]> _columnCache = new Dictionary<string, int[]>();
 
+        // Кэш «list → весь лист object[,]». EPPlus выдаёт 2D-массив всех значений
+        // одним вызовом в ~10–50 раз быстрее, чем вызовы ws.Cells[r,c].Value на каждую ячейку.
+        // Массив 0-индексный: arr[r-1, c-1] = ws.Cells[r, c].Value.
+        private readonly Dictionary<ExcelWorksheet, object[,]> _sheetCache =
+            new Dictionary<ExcelWorksheet, object[,]>();
+
+        private object[,] GetSheetData(ExcelWorksheet ws)
+        {
+            if (_sheetCache.TryGetValue(ws, out var cached)) return cached;
+            if (ws.Dimension == null)
+            {
+                cached = new object[0, 0];
+            }
+            else
+            {
+                int rows = ws.Dimension.End.Row;
+                int cols = ws.Dimension.End.Column;
+                // при одной-единственной ячейке EPPlus возвращает скаляр, подменяем на массив
+                cached = ws.Cells[1, 1, rows, cols].Value as object[,] ?? new object[rows, cols];
+            }
+            _sheetCache[ws] = cached;
+            return cached;
+        }
+
+        private static string CellToString(object v)
+        {
+            if (v == null) return null;
+            string s = v is string str ? str : v.ToString();
+            return string.IsNullOrEmpty(s) ? null : s.Trim();
+        }
+
         // takeLast=true нужен для «Идентификатор»/«Наименование» в блоке «Обновления ПО»,
         // где эти же имена колонок идут вторыми повторными в правой части листа
         private string GetCell(ExcelWorksheet ws, int row, string colName,
@@ -996,7 +1043,10 @@ namespace Vullnerability.Services
                 }
             }
             if (col < 0) return null;
-            return ws.Cells[row, col].Value?.ToString()?.Trim();
+            var arr = GetSheetData(ws);
+            int r = row - 1, c = col - 1;
+            if (r < 0 || c < 0 || r >= arr.GetLength(0) || c >= arr.GetLength(1)) return null;
+            return CellToString(arr[r, c]);
         }
 
         // нормализуем имя хедера: схлопываем любые пробельные в один, регистр опускаем
@@ -1024,13 +1074,18 @@ namespace Vullnerability.Services
             string key = ws.Name + "|" + NormHeader(colName);
             if (!_columnCache.TryGetValue(key, out var arr))
             {
-                int colCount = ws.Dimension.End.Column;
+                var sheet = GetSheetData(ws);
+                int colCount = sheet.GetLength(1);
                 string target = NormHeader(colName);
                 var matches = new List<int>();
-                for (int c = 1; c <= colCount; c++)
+                int headerRowIdx = HeaderRow - 1;
+                if (headerRowIdx >= 0 && headerRowIdx < sheet.GetLength(0))
                 {
-                    string header = NormHeader(ws.Cells[HeaderRow, c].Value?.ToString());
-                    if (header == target) matches.Add(c);
+                    for (int c = 0; c < colCount; c++)
+                    {
+                        string header = NormHeader(sheet[headerRowIdx, c]?.ToString());
+                        if (header == target) matches.Add(c + 1);
+                    }
                 }
                 arr = matches.ToArray();
                 _columnCache[key] = arr;
